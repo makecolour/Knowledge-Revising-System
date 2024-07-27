@@ -1,0 +1,239 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EduChamp : Education HTML Template </title>
+
+    <link rel="icon" href="../error-404.html" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.png"/>
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/assets.css">
+    <link rel="stylesheet" type="text/css" href="/assets/vendors/calendar/fullcalendar.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/typography.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/shortcodes/shortcodes.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/dashboard.css">
+    <link class="skin" rel="stylesheet" type="text/css" href="/assets/css/color/color-1.css">
+</head>
+<body class="ttr-opened-sidebar ttr-pinned-sidebar">
+
+<jsp:include page="dashboard-header.jsp"></jsp:include>
+
+<main class="ttr-wrapper">
+    <div class="container-fluid">
+        <div class="db-breadcrumb">
+            <h4 class="breadcrumb-title">Dashboard</h4>
+            <ul class="db-breadcrumb-list">
+                <li><a href="#"><i class="fa fa-home"></i>Home</a></li>
+                <li>Dashboard</li>
+            </ul>
+        </div>
+        <div class="" style="display: flex; flex-direction: column">
+            <div class="">
+                <div class="heading-bx left">
+                    <h2 class="title-head">Course</h2>
+                </div>
+
+                <div style="display: flex; flex-direction: row; justify-content: space-between">
+                    <form action="${pageContext.request.contextPath}/course-admin/search" method="get" class="form-group col-8" id="searchForm">
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="mr-2">
+                                <input name="courseName" type="text" class="form-control" placeholder="Enter course name" value="${sessionScope.courseName}">
+                            </div>
+                            <div class="mr-2">
+                                <select name="subjectId" class="form-control" id="subjectSelect" onchange="submitForm()">
+                                    <option value="">All</option>
+                                    <c:forEach items="${subjectSet}" var="sub">
+                                        <option value="${sub.id}" <c:if test="${sub.id == param.subjectId}">selected</c:if>>${sub.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="mr-2">
+                                <select name="semesterId" class="form-control" id="semesterSelect" onchange="submitForm()">
+                                    <option value="">All</option>
+                                    <c:forEach items="${semesterSet}" var="sub">
+                                        <option value="${sub.id}" <c:if test="${sub.id == param.semesterId}">selected</c:if>>${sub.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="mr-2">
+                                <select name="teacher" class="form-control" id="teacherSelect" onchange="submitForm()">
+                                    <option value="">All</option>
+                                    <c:forEach items="${teacherSet}" var="sub">
+                                        <option value="${sub.id}" <c:if test="${sub.id == param.teacher}">selected</c:if>>${sub.fullName} - ${sub.id}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="mr-2">
+                                <select name="status" class="form-control" id="statusSelect" onchange="submitForm()">
+                                    <option value="" <c:if test="${empty param.status}">selected</c:if>>All</option>
+                                    <option value="true" <c:if test="${'true' == param.status}">selected</c:if>>Active</option>
+                                    <option value="false" <c:if test="${'false' == param.status}">selected</c:if>>Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div>
+                        <a href="/course-adding" class="btn btn-secondary">Add</a>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Id
+                                <a href="${pageContext.request.contextPath}/course-admin/search?courseName=${param.courseName}&subjectId=${param.subjectId}&teacher=${param.teacher}&status=${param.status}&order=asc&column=id">↑</a>
+                                <a href="${pageContext.request.contextPath}/course-admin/search?courseName=${param.courseName}&subjectId=${param.subjectId}&teacher=${param.teacher}&status=${param.status}&order=desc&column=id">↓</a>
+                            </th>
+                            <th>Name
+                                <a href="${pageContext.request.contextPath}/course-admin/search?courseName=${param.courseName}&subjectId=${param.subjectId}&teacher=${param.teacher}&status=${param.status}&order=asc&column=courseName">↑</a>
+                                <a href="${pageContext.request.contextPath}/course-admin/search?courseName=${param.courseName}&subjectId=${param.subjectId}&teacher=${param.teacher}&status=${param.status}&order=desc&column=courseName">↓</a>
+                            </th>
+                            <th>Semester
+                                <a href="${pageContext.request.contextPath}/course-admin/search?courseName=${param.courseName}&subjectId=${param.subjectId}&teacher=${param.teacher}&status=${param.status}&order=asc&column=semester">↑</a>
+                                <a href="${pageContext.request.contextPath}/course-admin/search?courseName=${param.courseName}&subjectId=${param.subjectId}&teacher=${param.teacher}&status=${param.status}&order=desc&column=semester">↓</a>
+                            </th>
+                            <th>Subject
+                                <a href="${pageContext.request.contextPath}/course-admin/search?courseName=${param.courseName}&subjectId=${param.subjectId}&teacher=${param.teacher}&status=${param.status}&order=asc&column=subject.name">↑</a>
+                                <a href="${pageContext.request.contextPath}/course-admin/search?courseName=${param.courseName}&subjectId=${param.subjectId}&teacher=${param.teacher}&status=${param.status}&order=desc&column=subject.name">↓</a>
+                            </th>
+                            <th>Teacher
+                                <a href="${pageContext.request.contextPath}/course-admin/search?courseName=${param.courseName}&subjectId=${param.subjectId}&teacher=${param.teacher}&status=${param.status}&order=asc&column=teacher.fullName">↑</a>
+                                <a href="${pageContext.request.contextPath}/course-admin/search?courseName=${param.courseName}&subjectId=${param.subjectId}&teacher=${param.teacher}&status=${param.status}&order=desc&column=teacher.fullName">↓</a>
+                            </th>
+                            <th>Status
+                                <a href="${pageContext.request.contextPath}/course-admin/search?courseName=${param.courseName}&subjectId=${param.subjectId}&teacher=${param.teacher}&status=${param.status}&order=asc&column=status">↑</a>
+                                <a href="${pageContext.request.contextPath}/course-admin/search?courseName=${param.courseName}&subjectId=${param.subjectId}&teacher=${param.teacher}&status=${param.status}&order=desc&column=status">↓</a>
+                            </th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:if test="${empty courseList}">
+                            <div class="alert alert-warning" role="alert">No course found</div>
+                        </c:if>
+                        <c:forEach var="list" items="${courseList}">
+                            <tr>
+                                <td>${list.id}</td>
+                                <td>${list.courseName}</td>
+                                <td>${list.role.name}</td>
+                                <td>${list.subject.name}</td>
+                                <td>${list.teacher.fullName}</td>
+                                <td>${list.status ? "Active" : "Inactive"}</td>
+                                <td>
+                                    <form action="/course-admin/edit/${list.id}" method="get" style="display: inline;">
+                                        <button type="submit" class="btn btn-danger">Edit</button>
+                                    </form>
+                                    <form id="statusForm-${list.id}"  action="/course-admin/edit2/${list.id}/page=${currentPage}/size=${totalPages}"  method="post" style="display: inline;">
+                                        <button type="button" class="btn ${list.status ? 'btn-danger' : 'btn-success'}" data-toggle="modal" data-target="#statusModal-${list.id}">
+                                                ${list.status ? "Inactive" : "Active"}
+                                        </button>
+                                    </form>
+                                    <form id="statusForm-${list.id}"  action="/course/detail/participant/${list.id}"  method="get" style="display: inline;">
+                                        <button type="submit" class="btn btn-danger">Participant</button>
+                                    </form>
+
+                                </td>
+                            </tr>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="statusModal-${list.id}" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel-${list.id}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="statusModalLabel-${list.id}">Confirm Change Status</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to change the status of the course: ${list.courseName}?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <button type="submit" form="statusForm-${list.id}" class="btn ${list.status ? 'btn-danger' : 'btn-success'}">${list.status ? "Inactive" : "Active"}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                    <div aria-label="Page navigation">
+                        <ul class="pagination">
+                            <!-- Previous Button -->
+                            <c:if test="${currentPage > 0}">
+                                <li class="page-item">
+                                    <a class="page-link"
+                                       href="${pageContext.request.contextPath}/course-admin/search?courseName=${param.courseName}&subjectId=${param.subjectId}&status=${param.status}&page=${currentPage-1}&size=${9}">Previous</a>
+                                </li>
+                            </c:if>
+
+                            <!-- Page Number Links -->
+                            <c:if test="${totalPages > 0}">
+                                <c:forEach var="i" begin="0" end="${totalPages - 1}">
+                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link"
+                                           href="${pageContext.request.contextPath}/course-admin/search?courseName=${param.courseName}&subjectId=${param.subjectId}&status=${param.status}&page=${i}&size=${9}">${i + 1}</a>
+                                    </li>
+                                </c:forEach>
+                            </c:if>
+
+                            <!-- Next Button -->
+                            <c:if test="${currentPage < totalPages - 1}">
+                                <li class="page-item">
+                                    <a class="page-link"
+                                       href="${pageContext.request.contextPath}/course-admin/search?courseName=${param.courseName}&subjectId=${param.subjectId}&status=${param.status}&page=${currentPage+1}&size=${9}">Next</a>
+                                </li>
+                            </c:if>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="ttr-overlay"></div>
+
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/vendors/bootstrap/js/popper.min.js"></script>
+<script src="/assets/vendors/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/vendors/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="/assets/vendors/bootstrap-touchspin/jquery.bootstrap-touchspin.js"></script>
+<script src="/assets/vendors/magnific-popup/magnific-popup.js"></script>
+<script src="/assets/vendors/counter/waypoints-min.js"></script>
+<script src="/assets/vendors/counter/counterup.min.js"></script>
+<script src="/assets/vendors/imagesloaded/imagesloaded.js"></script>
+<script src="/assets/vendors/masonry/masonry.js"></script>
+<script src="/assets/vendors/masonry/filter.js"></script>
+<script src="/assets/vendors/owl-carousel/owl.carousel.js"></script>
+<script src="/assets/vendors/scroll/scrollbar.min.js"></script>
+<script src="/assets/js/functions.js"></script>
+<script src="/assets/vendors/chart/chart.min.js"></script>
+<script src="/assets/js/admin.js"></script>
+<script src="/assets/vendors/calendar/moment.min.js"></script>
+<script src="/assets/vendors/calendar/fullcalendar.js"></script>
+<script src="/assets/vendors/switcher/switcher.js"></script>
+<script>
+    function submitForm() {
+        document.getElementById('searchForm').submit();
+    }
+
+    $(document).ready(function () {
+        // Ensure that modals close correctly
+        $('.modal').on('hidden.bs.modal', function () {
+            $(this).find('form')[0].reset();
+        });
+    });
+</script>
+</body>
+
+</html>
