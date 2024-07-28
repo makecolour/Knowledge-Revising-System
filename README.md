@@ -1,7 +1,7 @@
 # KRS - Knowledge Revising System
 
 ## Description
-Knowledge Revising System is a accustomed, rigid yet powerful system that allow both Teachers and Students the ability to teach and learn and share knowledge effectively and collaberatively. Built from the ground up, tailor made for students and teachers alike. This is the app made for learning.
+Knowledge Revising System is an accustomed, rigid yet powerful system that allow both Teachers and Students the ability to teach and learn and share knowledge effectively and collaberatively. Built from the ground up, tailor made for students and teachers alike. This is the app made for learning.
 
 
 ## Installation
